@@ -1,0 +1,21 @@
+service: swda-etf-crash-alert
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  profile: tobias
+  runtime: nodejs20.x
+  region: eu-south-1
+  memorySize: 256
+  timeout: 30
+
+build:
+  minify: true # Default false
+
+functions:
+  checkBollingerBands:
+    handler: src/handler.checkBollingerBands
+    events: # Every hour when the markets are open in europe using a cron job
+      - schedule: cron(0 8-17 * * 1-5)
+

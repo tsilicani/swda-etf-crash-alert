@@ -1,0 +1,7 @@
+{
+    "cSpell.words": [
+        "Bollinger",
+        "swda"
+    ],
+    "npm.exclude": ".serverless",
+}
