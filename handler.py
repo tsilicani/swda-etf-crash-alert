@@ -1,8 +1,10 @@
 from statistics import mean, stdev
-from typing import List, Dict, Union, Tuple, Optional
+from typing import List, Dict, Union, Tuple
 from urllib import request, parse
 import json
 import time
+
+THRESHOLD = 5.0
 
 
 def send_telegram_message(message):
@@ -12,12 +14,11 @@ def send_telegram_message(message):
         message
     )  # Remove the encode("UTF-8") as parse.quote handles encoding
     uri = f"{url}?chat_id={chat_id}&text={text}"
-    print(f"Sending request to: {uri}")  # Debug print
     req = request.Request(uri)
     request.urlopen(req)
 
 
-def get_current_data() -> Tuple[float, List[Optional[float]], List[int]]:
+def get_current_data() -> Tuple[float, List[float], List[int]]:
     """
     Fetch current and historical data for SWDA.MI ETF from Yahoo Finance.
 
@@ -144,16 +145,18 @@ def handler(event, context):
     bands = calculate_bbands_series(close_prices, timestamps)
     latest_band = bands[-1]
     lower = latest_band["lower"]
+    assert lower is not None
     interesting_value = current_price - lower
-    message = (
-        "Current: {:.2f} €\n"
-        "Lower Band: {:.2f} €\n"
-        "Distance to Lower Band: {:.2f} €".format(
-            current_price, latest_band["lower"], interesting_value
+    if lower < THRESHOLD:
+        print(f"Interesting value: {interesting_value} < {THRESHOLD}: alert on")
+        message = (
+            "Current: {:.2f} €\n"
+            "Lower Band: {:.2f} €\n"
+            "Distance to Lower Band: {:.2f} €".format(
+                current_price, latest_band["lower"], interesting_value
+            )
         )
-    )
-    send_telegram_message(message)
-
-
-if __name__ == "__main__":
-    handler(None, None)
+        print(message)
+        send_telegram_message(message)
+    else:
+        print(f"Interesting value: {interesting_value} >= {THRESHOLD}: no alert")

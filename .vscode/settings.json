@@ -4,7 +4,9 @@
         "bokeh",
         "Bollinger",
         "KHTML",
-        "swda"
+        "swda",
+        "xaxis",
+        "yaxis"
     ],
-    "npm.exclude": ".serverless",
+    "npm.exclude": "**/.venv/**",
 }
