@@ -1,6 +1,9 @@
 {
     "cSpell.words": [
+        "bbands",
+        "bokeh",
         "Bollinger",
+        "KHTML",
         "swda"
     ],
     "npm.exclude": ".serverless",

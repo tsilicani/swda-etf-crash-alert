@@ -11,11 +11,6 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@types/node": "^22.9.0",
-    "serverless": "^4.4.10",
-    "typescript": "^5.6.3"
-  },
-  "dependencies": {
-    "yahoo-finance2": "^2.13.2"
+    "serverless": "^4.4.10"
   }
 }

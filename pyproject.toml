@@ -1,5 +1,5 @@
 [tool.poetry]
-authors = ["Tobias Silicani <silicani80@gmail.com>"]
+authors = []
 description = ""
 name = "swda-etf-crash-alert"
 readme = "README.md"
@@ -10,8 +10,6 @@ python = "^3.12"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
-pandas = "^2.2.3"
-plotly = "^5.24.1"
 bokeh = "^3.6.1"
 
 [build-system]
