@@ -147,7 +147,8 @@ def handler(event, context):
     lower = latest_band["lower"]
     assert lower is not None
     interesting_value = current_price - lower
-    if lower < THRESHOLD:
+    print(f"Interesting value: {interesting_value}, threshold: {THRESHOLD}")
+    if interesting_value < THRESHOLD:
         print(f"Interesting value: {interesting_value} < {THRESHOLD}: alert on")
         message = (
             "Current: {:.2f} €\n"
