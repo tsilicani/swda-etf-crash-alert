@@ -144,20 +144,21 @@ def handler(event, context):
     current_price, close_prices, timestamps = get_current_data()
     bands = calculate_bbands_series(close_prices, timestamps)
     latest_band = bands[-1]
+    middle = latest_band["middle"]
+    assert middle is not None
     lower = latest_band["lower"]
     assert lower is not None
-    interesting_value = current_price - lower
-    print(f"Interesting value: {interesting_value}, threshold: {THRESHOLD}")
-    if interesting_value < THRESHOLD:
-        print(f"Interesting value: {interesting_value} < {THRESHOLD}: alert on")
+    band_width = middle - lower
+    margin = band_width * 0.3
+    limit = lower + margin
+    if current_price <= limit:
+        print(f"Current price ({current_price}) <= Limit ({limit}): alert on")
         message = (
-            "Current: {:.2f} €\n"
-            "Lower Band: {:.2f} €\n"
-            "Distance to Lower Band: {:.2f} €".format(
-                current_price, latest_band["lower"], interesting_value
-            )
+            f"Current: {current_price:.2f} €\n"
+            f"Lower Band: {lower:.2f} €\n"
+            f"Limit: {limit:.2f} €"
         )
         print(message)
         send_telegram_message(message)
     else:
-        print(f"Interesting value: {interesting_value} >= {THRESHOLD}: no alert")
+        print(f"Current price ({current_price}) > Limit ({limit}): no alert")
