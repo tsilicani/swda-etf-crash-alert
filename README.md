@@ -6,20 +6,16 @@ This serverless application monitors ETFs for potential market crashes using Bol
 
 ```mermaid
 architecture-beta
-    group monitoring(fa:fa-cloud)[ETF Monitoring Stack]
-        service scheduler(fa:fa-clock)[EventBridge Scheduler] in monitoring
-        service analyzer(fa:fa-function)[Lambda Analyzer] in monitoring
-        service logs(fa:fa-chart-line)[CloudWatch Logs] in monitoring
-        service deployment(fa:fa-database)[S3 Deployment] in monitoring
-        service security(fa:fa-key)[IAM Permissions] in monitoring
-        service yahoo(fa:fa-chart-bar)[Yahoo Finance] in monitoring
-        service telegram(fa:fa-bell)[Telegram Alerts] in monitoring
+    group monitoring(logos:aws-lambda)[ETF Monitoring Stack]
+        service yahoo(internet)[Yahoo Finance API] in monitoring
+        service scheduler(logos:aws-eventbridge)[EventBridge Scheduler] in monitoring
+        service analyzer(logos:aws-lambda)[Lambda Analyzer] in monitoring
+        service logs(logos:aws-cloudwatch)[CloudWatch Logs] in monitoring
+        service telegram(internet)[Telegram Alerts] in monitoring
 
+        yahoo:B --> T:analyzer
         scheduler:R --> L:analyzer
         analyzer:R --> L:logs
-        deployment:T -- B:analyzer
-        security:T -- B:analyzer
-        analyzer:T --> B:yahoo
         analyzer:B --> T:telegram
 ```
 
